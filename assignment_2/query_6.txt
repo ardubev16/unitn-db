@@ -1,0 +1,19 @@
+SELECT DISTINCT movies.title, movies.year
+FROM movies INNER JOIN movieawards ON
+	movies.title = movieawards.title AND 
+	movies.year = movieawards.year
+WHERE movieawards.award LIKE 'Oscar%' AND movieawards.result = 'won'
+GROUP BY movies.title, movies.year
+HAVING COUNT(*) = (
+
+	SELECT MAX(y.oscar_vinti)
+	FROM (SELECT mo.title, COUNT(*) AS oscar_vinti
+		FROM movies AS mo INNER JOIN movieawards AS ms
+		ON mo.title = ms.title AND mo.year = ms.year
+	WHERE ms.award LIKE 'Oscar%' AND ms.result = 'won'
+	GROUP BY mo.title
+) y
+	
+)
+ORDER BY movies.title, movies.year;
+

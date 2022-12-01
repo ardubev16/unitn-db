@@ -1,0 +1,20 @@
+SELECT x.title, x.year, 
+CASE
+	WHEN x.total = -1
+	THEN -1
+	ELSE TRUNC(TRUNC(x.win,2)/TRUNC(x.total,2),2)
+END success_rate
+FROM(
+SELECT mo.title, mo.year, CASE
+	WHEN COUNT( CASE WHEN ms.result = 'won' OR ms.result = 'nominated' THEN 1 ELSE null END) = 0
+	THEN -1
+	ELSE COUNT( CASE WHEN ms.result = 'won' OR ms.result = 'nominated' THEN 1 ELSE null END)
+END TOTAL,
+COUNT( CASE WHEN ms.result = 'won' THEN 1 ELSE null END) AS WIN
+
+FROM movies as mo LEFT JOIN movieawards AS ms
+	ON mo.title = ms.title AND mo.year = ms.year
+GROUP BY mo.title, mo.year
+ORDER BY mo.title, mo.year
+) x
+ORDER BY x.title, x.year, success_rate;
