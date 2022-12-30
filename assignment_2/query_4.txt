@@ -2,7 +2,7 @@ WITH
 	winners AS (
 		SELECT d.director
 		FROM directors AS d INNER JOIN movies AS m ON d.director = m.director
-		WHERE gross-budget > 1000000 AND EXTRACT(Year FROM Current_date) - m.year <= 5
+		WHERE gross-budget > 1000000 AND EXTRACT(Year FROM Current_date) - m.year < 5
 	)
 (SELECT DISTINCT award, year, ds.director
 FROM winners INNER JOIN directorawards AS ds ON winners.director = ds.director

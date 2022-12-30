@@ -9,7 +9,7 @@ WITH
         (
             SELECT DISTINCT title, year
             FROM awards_anni_80
-            WHERE awards_anni_80.award LIKE 'Oscar%'
+            WHERE awards_anni_80.award LIKE 'oscar%'
             AND awards_anni_80.result = 'won'
         ),
     num_80 AS
